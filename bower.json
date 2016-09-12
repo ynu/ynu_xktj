@@ -1,0 +1,28 @@
+{
+  "name": "ynu_xktj",
+  "description": "",
+  "main": "",
+  "authors": [
+    "liudonghua123 <liudonghua123@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "angular": "^1.5.8",
+    "angular-route": "^1.5.8",
+    "angular-ui-grid": "^3.2.7",
+    "angular-smart-table": "^2.1.8"
+  },
+  "resolutions": {
+    "angular": "1.5.8"
+  }
+}
