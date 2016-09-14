@@ -1,0 +1,44 @@
+<div class="row well" ng-controller="printCtrl">
+
+    <div class="row well">
+        <div>
+            <button class="btn btn-primary btn-raised col-sm-4 col-sm-offset-4" ng-click="print()">打印如下表格</button>
+        </div>
+    </div>
+
+    <div class="row" id="data_table">
+        <table class="table">
+            <caption class="text-center lead">{{current_xy}}——教师主要学科归属统计汇总表</caption>
+            <thead>
+                <th>工号</th>
+                <th>姓名</th>
+                <th>性别</th>
+                <th>专业技术职务</th>
+                <th>所在学院</th>
+                <th>主要学科</th>
+                <th>主要学科导师</th>
+                <th>第二学科</th>
+                <th>第二学科导师</th>
+                <th>手机号码</th>
+                <th>电子邮箱</th>
+                <th>备注</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in data">
+                    <td title="'工号'" filter="{ id: 'text'}" sortable="'id'">{{row.id}}</td>
+                    <td title="'姓名'" filter="{ xm: 'text'}" sortable="'xm'">{{row.xm}}</td>
+                    <td title="'性别'" filter="{ xb: 'text'}" sortable="'xb'">{{row.xb}}</td>
+                    <td title="'专业技术职务'" filter="{ zyjszw: 'text'}" sortable="'zyjszw'">{{row.zyjszw}}</td>
+                    <td title="'所在学院'" filter="{ szxy: 'text'}" sortable="'szxy'">{{row.szxy}}</td>
+                    <td title="'主要学科'" filter="{ zyxk: 'text'}" sortable="'zyxk'">{{row.zyxk}}</td>
+                    <td title="'主要学科导师'" filter="{ zyxk_ds: 'text'}" sortable="'zyxk_ds'">{{row.zyxk_ds}}</td>
+                    <td title="'第二学科'" filter="{ dexk: 'text'}" sortable="'dexk'">{{row.dexk}}</td>
+                    <td title="'第二学科导师'" filter="{ dekx_ds: 'text'}" sortable="'dexk_ds'">{{row.dexk_ds}}</td>
+                    <td title="'手机号码'" filter="{ sjhm: 'text'}" sortable="'sjhm'">{{row.sjhm}}</td>
+                    <td title="'电子邮箱'" filter="{ dzyx: 'text'}" sortable="'dzyx'">{{row.dzyx}}</td>
+                    <td title="'备注'" filter="{ bz: 'text'}" sortable="'bz'">{{row.bz}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

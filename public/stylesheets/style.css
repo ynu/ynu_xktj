@@ -11,3 +11,32 @@ a {
 .container > .row > .table tr.active td {
   background:grey;
 }
+
+.form-group {
+  padding-bottom: 0px;
+  margin: 0;
+}
+
+.btn, .input-group-btn .btn {
+  margin: 10px 0px;
+}
+
+.container-top-fix {
+  margin-top: 30px;
+}
+
+body>table th, body>table td {
+  text-align: center;
+}
+
+/* http://stackoverflow.com/questions/12434790/table-heading-repeat-while-printing */
+@media print
+{
+  thead {
+    display: table-header-group;
+  }
+
+  * {
+    font-size: 1em;
+  }
+}

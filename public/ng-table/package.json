@@ -1,58 +1,13 @@
 {
-  "_args": [
-    [
-      {
-        "name": "ng-table",
-        "raw": "ng-table",
-        "rawSpec": "",
-        "scope": null,
-        "spec": "latest",
-        "type": "tag"
-      },
-      "/Users/liudonghua/code/cas/ynu_xktj"
-    ]
-  ],
-  "_from": "ng-table@latest",
-  "_id": "ng-table@1.0.0",
-  "_inCache": true,
-  "_installable": true,
-  "_location": "/ng-table",
-  "_nodeVersion": "5.2.0",
-  "_npmOperationalInternal": {
-    "host": "packages-16-east.internal.npmjs.com",
-    "tmp": "tmp/ng-table-1.0.0.tgz_1466447344470_0.5001876254100353"
+  "name": "ng-table",
+  "version": "1.0.0",
+  "author": "Vitalii Savchuk <esvit666@gmail.com>",
+  "license": "BSD",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/esvit/ng-table.git"
   },
-  "_npmUser": {
-    "email": "npm@christianacca.e4ward.com",
-    "name": "christianacca"
-  },
-  "_npmVersion": "3.9.6",
-  "_phantomChildren": {},
-  "_requested": {
-    "name": "ng-table",
-    "raw": "ng-table",
-    "rawSpec": "",
-    "scope": null,
-    "spec": "latest",
-    "type": "tag"
-  },
-  "_requiredBy": [
-    "/"
-  ],
-  "_resolved": "https://registry.npmjs.org/ng-table/-/ng-table-1.0.0.tgz",
-  "_shasum": "2fe80b62bc56e80729e7597a0d7205548cdaf2bf",
-  "_shrinkwrap": null,
-  "_spec": "ng-table",
-  "_where": "/Users/liudonghua/code/cas/ynu_xktj",
-  "author": {
-    "email": "esvit666@gmail.com",
-    "name": "Vitalii Savchuk"
-  },
-  "bugs": {
-    "url": "https://github.com/esvit/ng-table/issues"
-  },
-  "dependencies": {},
-  "description": "Table + AngularJS\r =================\r [![Build Status](https://travis-ci.org/esvit/ng-table.svg)](https://travis-ci.org/esvit/ng-table) [![Coverage Status](https://coveralls.io/repos/esvit/ng-table/badge.png)](https://coveralls.io/r/esvit/ng-table)",
+  "main": "dist/ng-table.js",
   "devDependencies": {
     "browserify": "~9.0.8",
     "canonical-path": "0.0.2",
@@ -95,57 +50,15 @@
     "typescript": "1.8.10",
     "typings": "^1.2.0"
   },
-  "directories": {},
-  "dist": {
-    "shasum": "2fe80b62bc56e80729e7597a0d7205548cdaf2bf",
-    "tarball": "https://registry.npmjs.org/ng-table/-/ng-table-1.0.0.tgz"
-  },
-  "gitHead": "cf8bf8ad2c871ff8b939756857fa4b376f1c0ba4",
-  "homepage": "https://github.com/esvit/ng-table#readme",
-  "license": "BSD",
-  "main": "dist/ng-table.js",
-  "maintainers": [
-    {
-      "email": "npm@christianacca.e4ward.com",
-      "name": "christianacca"
-    },
-    {
-      "email": "npm@maxedmands.com",
-      "name": "demands"
-    },
-    {
-      "email": "esvit666@gmail.com",
-      "name": "esvit"
-    },
-    {
-      "email": "weehoo@gmail.com",
-      "name": "funkytaco"
-    },
-    {
-      "email": "open-source@goodeggs.com",
-      "name": "goodeggs"
-    },
-    {
-      "email": "gregoirevandera@gmail.com",
-      "name": "gr3g"
-    }
-  ],
-  "name": "ng-table",
-  "optionalDependencies": {},
-  "peerDependencies": {
-    "angular": "^1.2"
-  },
-  "readme": "ERROR: No README data found!",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/esvit/ng-table.git"
-  },
   "scripts": {
-    "init": "bower prune && bower install && npm run typings",
+    "postinstall": "npm run typings",
     "test": "npm run tsc && karma start --single-run --no-auto-watch",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "typings": "typings install"
   },
-  "version": "1.0.0"
+  "dependencies": {},
+  "peerDependencies": {
+    "angular": "^1.2"
+  }
 }

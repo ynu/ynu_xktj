@@ -20,9 +20,16 @@
     "angular": "^1.5.8",
     "angular-route": "^1.5.8",
     "angular-ui-grid": "^3.2.7",
-    "angular-smart-table": "^2.1.8"
+    "angular-smart-table": "^2.1.8",
+    "ng-table": "^1.0.0",
+    "bootstrap-material-design": "v0.5.10",
+    "angular-animate": "^1.5.8",
+    "ng-csv": "^0.3.6",
+    "angular-sanitize": "^1.5.8"
   },
   "resolutions": {
-    "angular": "1.5.8"
+    "angular": "1.5.8",
+    "ng-table": "0.8.3",
+    "bootstrap-material-design": "v0.5.10"
   }
 }

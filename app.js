@@ -19,7 +19,7 @@ cas.configure({
     }
 });
 
-var routes = require('./routes/default');
+var routes_root = require('./routes/root');
 var routes_xkdm = require('./routes/xkdm');
 var routes_xktj = require('./routes/xktj');
 
@@ -40,11 +40,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({secret: 'ynu_xktj'}));
-app.use(express.static(path.join(__dirname, 'public')));
+// serve static resources
+app.use('/', express.static(path.join(__dirname, 'public')));
+//app.use('/', cas.ssout('/'), cas.serviceValidate(), cas.authenticate(), express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+app.use('/', routes_root);
 app.use('/xkdm', routes_xkdm);
 app.use('/xktj', routes_xktj);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

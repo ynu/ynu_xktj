@@ -4,21 +4,40 @@ var router = express.Router();
 var models  = require('../models');
 var sequelize = models.sequelize;
 
+router.get('/relevant/by_id/:id', function(req, res, next) {
+    let id = req.params.id;
+    sequelize.query("select * from xktj where szxy = (select szxy from xktj where id=:user_id)", { replacements: { user_id: id }, type: sequelize.QueryTypes.SELECT})
+        .then(function(xktjs) {
+            res.json(xktjs);
+        });
+});
+
+router.get('/relevant/by_szxy/:szxy', function(req, res, next) {
+    let szxy = req.params.szxy;
+    models.xktj.findAll({
+        where: {
+            szxy: szxy
+        }
+    }).then(function (xktjs) {
+        res.json(xktjs);
+    });
+});
+
+router.get('/xy/', function(req, res, next) {
+    sequelize.query("select distinct szxy from xktj", { type: sequelize.QueryTypes.SELECT})
+        .then(function(szxys) {
+            res.json(szxys);
+        });
+});
+
 router.get('/:id', function(req, res, next) {
     let id = req.params.id;
     models.xktj.findOne({
         where: {
-        id: id
-    }
+            id: id
+        }
     }).then(function (xktj) {
-        let szxy = xktj.szxy;
-        models.xktj.findAll({
-            where: {
-                szxy: szxy
-            }
-        }).then(function (xktjs) {
-            res.json(xktjs);
-        });
+        res.json(xktj);
     });
 });
 
@@ -35,7 +54,7 @@ router.post('/', function(req, res, next) {
     }).catch(function(err) {
         console.log(err);
     }).finally(function() {
-        
+
     });;
 });
 
