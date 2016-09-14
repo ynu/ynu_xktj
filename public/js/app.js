@@ -112,9 +112,12 @@ app.controller('tableCtrl', ['$scope', '$rootScope', '$http', '$filter', 'NgTabl
                 update_table_data(data);
             });
     }
+    else {
+        update_table_data($scope.data);
+    }
 
 
-    if($scope.xkdm) {
+    if(!$scope.xkdm) {
         $http.get('/xkdm').then(function (response) {
             if (response.status == 200) {
                 $scope.xkdm = response.data;
