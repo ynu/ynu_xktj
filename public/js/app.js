@@ -8,14 +8,15 @@ app.config(function($routeProvider, $locationProvider) {
         .when('/home', {
             templateUrl : 'partials/home.html'
         })
-
         .when('/print', {
             templateUrl : 'partials/print.html'
         })
-    .otherwise({redirectTo : '/home'})
+        .when('/', {
+            redirectTo : '/home'
+        });
 
     // use the HTML5 History API
-    $locationProvider.html5Mode(true);
+    //$locationProvider.html5Mode(true);
 });
 
 app.controller('navCtrl', function ($scope, $location) {

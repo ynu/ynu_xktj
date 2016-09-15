@@ -1,5 +1,6 @@
 var express = require('express');
 var cas = require('connect-cas');
+var url = require('url');
 var router = express.Router();
 var models  = require('../models');
 var sequelize = models.sequelize;
@@ -23,7 +24,7 @@ var get_attributes = function(req) {
 // cas.ssout                    : handle logout requests directly from the CAS server
 // cas.serviceValidate()        : validate service tickets received from the CAS server
 // cas.authenticate()           : request an authentication if the user is not authenticated
-router.get('/', cas.ssout('/protected/index'), cas.serviceValidate(), cas.authenticate(), function(req, res) {
+router.get('/', cas.ssout('/'), cas.serviceValidate(), cas.authenticate(), function(req, res) {
   var user_id = get_user(req);
   // check user and type
   models.user.findOne({
@@ -47,7 +48,9 @@ router.get('/logout', function(req, res) {
   } else {
     req.session = null;
   }
-  res.render('message', {message: "用户退出成功!"});
+  var options = cas.configure();
+  options.pathname = options.paths.logout;
+  return res.redirect(url.format(options));
 });
 
 module.exports = router;
