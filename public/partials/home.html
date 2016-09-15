@@ -122,7 +122,7 @@
     <div class="col-md-8 col-md-pull-4">
         <div class="row well">
             <div>
-                <button class="btn btn-info btn-raised col-xs-12" charset="gbk" ng-csv="data" csv-header="['工号', '姓名', '性别', '专业技术职务', '所在学院', '主要学科']" filename="data.csv">导出成CSV</button>
+                <button class="btn btn-info btn-raised col-xs-12" charset="gbk" ng-csv="data" csv-header="['工号', '姓名', '性别', '专业技术职务', '最高学位', '学历', '所在学院', '主要学科', '主要学科导师', '第二学科', '第二学科导师', '手机号码', '电子邮箱', '备注']" filename="data.csv">导出成CSV</button>
             </div>
             <div class="alert alert-dismissible alert-success col-md-12" ng-show="update_status.status == 'success'" ng-click="update_status.status = ''">
                 <p class="text-center">更新<strong>{{update_status.teacher_name}}</strong>成功</p>
