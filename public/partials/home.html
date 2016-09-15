@@ -1,43 +1,13 @@
 <div class="row" ng-controller="tableCtrl">
-    <div class="col-md-8">
-        <div class="row well">
-            <div>
-                <button class="btn btn-info btn-raised" charset="gbk" ng-csv="data" csv-header="['工号', '姓名', '性别', '专业技术职务', '所在学院', '主要学科']" filename="data.csv">导出成CSV(使用Excel打开调整即可打印)</button>
-            </div>
-            <div class="alert alert-dismissible alert-success col-md-12" ng-show="update_status.status == 'success'" ng-click="update_status.status = ''">
-                <p class="text-center">更新<strong>{{update_status.teacher_name}}</strong>成功</p>
-            </div>
-            <div class="alert alert-dismissible alert-danger col-md-12" ng-show="update_status.status == 'error'" ng-click="update_status.status = ''">
-                <p class="text-center">更新<strong>{{update_status.teacher_name}}</strong>错误</p>
-            </div>
-
-            <div class="form-group" ng-show="user_type === 'admin'">
-                <label for="szxys" class="col-sm-4 control-label">选择学院</label>
-                <div class="col-sm-8">
-                    <select class="form-control" id="szxys" name="szxys" ng-model="selected_szxy" ng-change="update_szxy()" >
-                        <option ng-repeat="option in szxys" ng-value="option.szxy">{{option.szxy}}</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="row well">
-            <table ng-table="tableParams" class="table" show-filter="true">
-                <tr ng-repeat="row in $data" ng-click="setSelected(row);" ng-class="{'bg-success' : row.updated, 'bg-primary' : row.id === selected_row_id}">
-                    <td title="'工号'" filter="{ id: 'text'}" sortable="'id'">{{row.id}}</td>
-                    <td title="'姓名'" filter="{ xm: 'text'}" sortable="'xm'">{{row.xm}}</td>
-                    <td title="'性别'" filter="{ xb: 'text'}" sortable="'xb'">{{row.xb}}</td>
-                    <td title="'专业技术职务'" filter="{ zyjszw: 'text'}" sortable="'zyjszw'">{{row.zyjszw}}</td>
-                    <td title="'所在学院'" filter="{ szxy: 'text'}" sortable="'szxy'">{{row.szxy}}</td>
-                    <td title="'主要学科'" filter="{ zyxk: 'text'}" sortable="'zyxk'">{{row.zyxk}}</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <div class="col-md-4 well">
-        <form ng-controller="formCtrl" class="form-horizontal">
+    <div class="col-md-4 col-md-push-8">
+        <form ng-controller="formCtrl" class="form-horizontal well">
             <div class="row">
-                <button class="btn btn-primary btn-raised col-sm-5" ng-click="update_xktj(selectedRow)" ng-disabled="!selectedRow">更新</button>
-                <button class="btn btn-default btn-raised col-sm-offset-2 col-sm-5">取消</button>
+                <div class="col-xs-6">
+                    <button class="btn btn-primary btn-raised col-xs-12" ng-click="update_xktj(selectedRow)" ng-disabled="!selectedRow">更新</button>
+                </div>
+                <div class="col-xs-6">
+                    <button class="btn btn-default btn-raised col-xs-12">取消</button>
+                </div>
             </div>
             <div class="form-group">
                 <label for="id" class="col-sm-4 control-label">工号</label>
@@ -148,5 +118,41 @@
                 </div>
             </div>
         </form>
+    </div>
+    <div class="col-md-8 col-md-pull-4">
+        <div class="row well">
+            <div>
+                <button class="btn btn-info btn-raised col-xs-12" charset="gbk" ng-csv="data" csv-header="['工号', '姓名', '性别', '专业技术职务', '所在学院', '主要学科']" filename="data.csv">导出成CSV</button>
+            </div>
+            <div class="alert alert-dismissible alert-success col-md-12" ng-show="update_status.status == 'success'" ng-click="update_status.status = ''">
+                <p class="text-center">更新<strong>{{update_status.teacher_name}}</strong>成功</p>
+            </div>
+            <div class="alert alert-dismissible alert-danger col-md-12" ng-show="update_status.status == 'error'" ng-click="update_status.status = ''">
+                <p class="text-center">更新<strong>{{update_status.teacher_name}}</strong>错误</p>
+            </div>
+
+            <div class="form-group" ng-show="user_type === 'admin'">
+                <label for="szxys" class="col-sm-4 control-label">选择学院</label>
+                <div class="col-sm-8">
+                    <select class="form-control" id="szxys" name="szxys" ng-model="selected_szxy" ng-change="update_szxy()" >
+                        <option ng-repeat="option in szxys" ng-value="option.szxy">{{option.szxy}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row well">
+            <table ng-table="tableParams" class="table table-responsive" show-filter="true">
+                <tr ng-repeat="row in $data" ng-click="setSelected(row);" ng-class="{'bg-success' : row.updated, 'bg-primary' : row.id === selected_row_id}">
+                    <td title="'工号'" filter="{ id: 'text'}" sortable="'id'">{{row.id}}</td>
+                    <td title="'姓名'" filter="{ xm: 'text'}" sortable="'xm'">{{row.xm}}</td>
+                    <td title="'性别'" filter="{ xb: 'text'}" sortable="'xb'">{{row.xb}}</td>
+                    <td title="'专业技术职务'" filter="{ zyjszw: 'text'}" sortable="'zyjszw'">{{row.zyjszw}}</td>
+                    <!--
+                    <td title="'所在学院'" filter="{ szxy: 'text'}" sortable="'szxy'">{{row.szxy}}</td>
+                    <td title="'主要学科'" filter="{ zyxk: 'text'}" sortable="'zyxk'">{{row.zyxk}}</td>
+                    -->
+                </tr>
+            </table>
+        </div>
     </div>
 </div>

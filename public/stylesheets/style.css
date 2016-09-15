@@ -1,11 +1,3 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-
-a {
-  color: #00B7FF;
-}
 
 .container > .row > .table tr.active th ,
 .container > .row > .table tr.active td {
@@ -22,11 +14,12 @@ a {
 }
 
 .container-top-fix {
-  margin-top: 30px;
+  margin-top: 70px;
 }
 
-body>table th, body>table td {
+.table>thead>tr>th, .table>tbody>tr>td {
   text-align: center;
+  vertical-align: middle;
 }
 
 /* http://stackoverflow.com/questions/12434790/table-heading-repeat-while-printing */
