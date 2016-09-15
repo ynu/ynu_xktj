@@ -21,10 +21,7 @@ var get_attributes = function(req) {
   return attributes;
 }
 
-// cas.ssout                    : handle logout requests directly from the CAS server
-// cas.serviceValidate()        : validate service tickets received from the CAS server
-// cas.authenticate()           : request an authentication if the user is not authenticated
-router.get('/', cas.ssout('/'), cas.serviceValidate(), cas.authenticate(), function(req, res) {
+var index_callback = function(req, res) {
   var user_id = get_user(req);
   // check user and type
   models.user.findOne({
@@ -39,7 +36,14 @@ router.get('/', cas.ssout('/'), cas.serviceValidate(), cas.authenticate(), funct
       res.render('message', {message: "user not found"});
     }
   });
-});
+};
+
+// cas.ssout                    : handle logout requests directly from the CAS server
+// cas.serviceValidate()        : validate service tickets received from the CAS server
+// cas.authenticate()           : request an authentication if the user is not authenticated
+router.get('/', cas.ssout('/'), cas.serviceValidate(), cas.authenticate(), index_callback);
+router.get('/home', cas.ssout('/'), cas.serviceValidate(), cas.authenticate(), index_callback);
+router.get('/print', cas.ssout('/'), cas.serviceValidate(), cas.authenticate(), index_callback);
 
 // handle application logouts from the CAS logout page (in the browser)
 router.get('/logout', function(req, res) {
