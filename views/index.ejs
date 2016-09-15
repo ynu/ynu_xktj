@@ -42,12 +42,12 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li ng-class="{active:isActive('/home')}"><a href="#/home">学科统计</a></li>
-                <li ng-class="{active:isActive('/print')}"><a href="#/print">打印</a></li>
+                <li ng-class="{active:isActive('/home')}"><a href="/home">学科统计</a></li>
+                <li ng-class="{active:isActive('/print')}"><a href="/print">打印</a></li>
             </ul>
             <ul class="nav navbar-nav pull-right">
                 <li><a href="#">欢迎<span><%= user %></span></a></li>
-                <li><a href="/logout">退出</a></li>
+                <li><a href="/logout" target="_self">退出</a></li>
                 <li class="hidden"><%= type %></li>
             </ul>
         </div>
