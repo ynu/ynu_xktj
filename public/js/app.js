@@ -25,7 +25,7 @@ app.controller('navCtrl', function ($scope, $location) {
     }
 });
 
-app.controller('printCtrl', function($scope, $rootScope) {
+app.controller('printCtrl', function($scope, $rootScope, $http) {
     $scope.current_xy = $rootScope.current_xy;
     $scope.data = $rootScope.data;
     $scope.user_id = $rootScope.user_id;

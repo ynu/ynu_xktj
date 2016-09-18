@@ -23,6 +23,7 @@
 }
 
 /* http://stackoverflow.com/questions/12434790/table-heading-repeat-while-printing */
+/*
 @media print
 {
   thead {
@@ -32,4 +33,27 @@
   * {
     font-size: 1em;
   }
+}
+*/
+@media print {
+    table { page-break-after:auto;}
+    tr    { page-break-inside:avoid;}
+    td    { page-break-inside:auto;}
+    thead, tfoot {
+        break-inside:avoid;
+        display: table-header-group;
+   }
+}
+
+@page {
+            margin-top: 1cm;
+            margin-right: 1cm;
+            margin-bottom:1cm;
+            margin-left: 1cm;';
+            size:portrait;
+            /*
+            size:landscape;
+            -webkit-transform: rotate(-90deg); -moz-transform:rotate(-90deg);
+            filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+            */
 }
