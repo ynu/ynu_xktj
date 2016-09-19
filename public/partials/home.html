@@ -121,23 +121,31 @@
     </div>
     <div class="col-md-8 col-md-pull-4">
         <div class="row well">
-            <div>
-                <button class="btn btn-info btn-raised col-xs-12" charset="gbk" ng-csv="data" csv-header="['工号', '姓名', '性别', '专业技术职务', '最高学位', '学历', '所在学院', '主要学科', '主要学科导师', '第二学科', '第二学科导师', '手机号码', '电子邮箱', '备注']" filename="data.csv">导出成CSV</button>
+            <div class="row">
+                <div class="col-xs-6">
+                    <button class="btn btn-info btn-raised form-control" charset="gbk" ng-csv="data" csv-header="['工号', '姓名', '性别', '专业技术职务', '最高学位', '学历', '所在学院', '主要学科', '主要学科导师', '第二学科', '第二学科导师', '手机号码', '电子邮箱', '备注']" filename="data.csv">导出成CSV</button>
+                </div>
+                <div class="col-xs-6">
+                    <button class="btn btn-info btn-raised form-control" ng-click="export_xlsx()">导出成Excel</button>
+                </div>
             </div>
+
+            <form class="form-horizontal">
+                <div class="form-group" ng-show="user_type === 'admin'">
+                    <label for="szxys" class="col-sm-4 control-label">选择学院</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" id="szxys" name="szxys" ng-model="selected_szxy" ng-change="update_szxy()" >
+                            <option ng-repeat="option in szxys" ng-value="option.szxy">{{option.szxy}}</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+
             <div class="alert alert-dismissible alert-success col-md-12" ng-show="update_status.status == 'success'" ng-click="update_status.status = ''">
                 <p class="text-center">更新<strong>{{update_status.teacher_name}}</strong>成功</p>
             </div>
             <div class="alert alert-dismissible alert-danger col-md-12" ng-show="update_status.status == 'error'" ng-click="update_status.status = ''">
                 <p class="text-center">更新<strong>{{update_status.teacher_name}}</strong>错误</p>
-            </div>
-
-            <div class="form-group" ng-show="user_type === 'admin'">
-                <label for="szxys" class="col-sm-4 control-label">选择学院</label>
-                <div class="col-sm-8">
-                    <select class="form-control" id="szxys" name="szxys" ng-model="selected_szxy" ng-change="update_szxy()" >
-                        <option ng-repeat="option in szxys" ng-value="option.szxy">{{option.szxy}}</option>
-                    </select>
-                </div>
             </div>
         </div>
         <div class="row well">
