@@ -28,7 +28,7 @@
     "angular-sanitize": "^1.5.8",
     "js-xlsx": "^0.8.0",
     "file-saver": "#1.3.2",
-    "Blob": "https://github.com/eligrey/Blob.js"
+    "Blob": "*"
   },
   "resolutions": {
     "angular": "1.5.8",
