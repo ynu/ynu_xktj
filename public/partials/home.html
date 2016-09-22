@@ -151,7 +151,7 @@
                     <label for="szxys" class="col-sm-4 control-label">选择学院/单位</label>
                     <div class="col-sm-8">
                         <select class="form-control" id="szxys" name="szxys" ng-model="selected_szxy" ng-change="update_szxy()" >
-                            <option ng-repeat="option in xydws" ng-value="option">{{option}}</option>
+                            <option ng-repeat="option in xydws track by $index" ng-value="option">{{option}}</option>
                         </select>
                     </div>
                 </div>
