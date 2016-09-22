@@ -79,9 +79,14 @@ app.factory('dataService', function($http) {
     return {getDataByXY: getDataByXY, getDataByUserId: getDataByUserId, getXY: getXY, getXKDM: getXKDM, getExtraDW: getExtraDW};
 });
 
-app.controller('navCtrl', function ($scope, $location) {
+app.controller('navCtrl', function ($scope, $location, $http, $window) {
     $scope.isActive = function (route) {
         return route === $location.path();
+    }
+    $scope.logout = function () {
+        $http.get('http://xktj.grs.ynu.edu.cn/logout').success(function(data) {
+            $window.location="http://ids.ynu.edu.cn/authserver/logout?service=http://xktj.grs.ynu.edu.cn/";
+        });
     }
 });
 
@@ -165,7 +170,7 @@ app.controller('tableCtrl', function ($scope, $rootScope, $filter, NgTableParams
         },
 
         Workbook: function() {
-            if(!(this instanceof Workbook)) return new Workbook();
+            //if(!(this instanceof this.Workbook)) return new Workbook();
             this.SheetNames = [];
             this.Sheets = {};
         },
@@ -183,10 +188,10 @@ app.controller('tableCtrl', function ($scope, $rootScope, $filter, NgTableParams
         var data = $scope.data;
         if(data) {
             var array_data = [];
-            array_data.push(['工号', '姓名', '性别', '专业技术职务', '最高学位', '学历', '所在学院', '主要学科', '主要学科导师', '第二学科', '第二学科导师', '手机号码', '电子邮箱', '备注']);
+            array_data.push(['工号', '姓名', '出生日期', '性别', '专业技术职务', '最高学位', '学历', '所在学院', '主要学科', '主要学科导师', '第二学科', '第二学科导师', '手机号码', '电子邮箱', '备注']);
             for(var i = 0; i < data.length; i ++) {
                 item = data[i];
-                array_data.push([item.id, item.xm, item.xb, item.zyjszw, item.zgxw, item.xl, item.szxy, item.zyxk, item.zyxk_ds, item.dexk, item.dexk_ds, item.sjhm, item.dzyx, item.bz]);
+                array_data.push([item.id, item.xm, item.csrq, item.xb, item.zyjszw, item.zgxw, item.xl, item.szxy, item.zyxk, item.zyxk_ds, item.dexk, item.dexk_ds, item.sjhm, item.dzyx, item.bz]);
             }
 
             var ws_name = $scope.current_xy + "学科统计数据";
@@ -196,7 +201,7 @@ app.controller('tableCtrl', function ($scope, $rootScope, $filter, NgTableParams
             wb.SheetNames.push(ws_name);
             wb.Sheets[ws_name] = ws;
             var wbout = XLSX.write(wb, {bookType:'xlsx', bookSST:true, type: 'binary'});
-            saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), "data.xlsx")
+            saveAs(new Blob([xlsx_tool.s2ab(wbout)],{type:"application/octet-stream"}), "data.xlsx")
 
         }
     };
@@ -288,7 +293,7 @@ app.controller('tableCtrl', function ($scope, $rootScope, $filter, NgTableParams
 
 });
 
-app.controller('formCtrl', ['$scope', '$http', function ($scope, $http) {
+app.controller('formCtrl', function ($scope, $http, $window) {
     $scope.update_xkml = function() {
         var mlmc = $scope.selected_xkml;
         var xkdm = $scope.xkdm;
@@ -342,4 +347,8 @@ app.controller('formCtrl', ['$scope', '$http', function ($scope, $http) {
         });
     }
 
-}]);
+    $scope.refresh = function() {
+         $window.location.reload();
+    }
+
+});

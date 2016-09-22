@@ -52,9 +52,12 @@ router.get('/logout', function(req, res) {
   } else {
     req.session = null;
   }
+  /*
   var options = cas.configure();
   options.pathname = options.paths.logout;
   return res.redirect(url.format(options));
+  */
+  return res.json({message: 'ok'});
 });
 
 module.exports = router;
