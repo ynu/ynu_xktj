@@ -1,7 +1,7 @@
 /**
  * Created by liudonghua on 2016-09-12.
  */
-app = angular.module('myApp', ['ngRoute', 'ngTable', 'ngSanitize', 'ngCsv']);
+app = angular.module('myApp', ['ngRoute', 'ngTable', 'ngSanitize', 'ngCsv', 'ui.bootstrap.datetimepicker']);
 
 app.config(function($routeProvider, $locationProvider) {
     $routeProvider
@@ -19,23 +19,82 @@ app.config(function($routeProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
 });
 
+app.factory('dataService', function($http) {
+    var promiseForXY, promiseForXKDM, promiseForExtraDW;
+    var getDataByXY = {
+        async: function(xy) {
+            // $http returns a promise, which has a then function, which also returns a promise
+            var promiseForDataByXY = $http.get('/xktj/relevant/by_szxy/' + xy).then(function (response) {
+                // The then function here is an opportunity to modify the response
+                console.log('getDataByXY(%s) is %j', xy, response);
+                // The return value gets picked up by the then in the controller.
+                return response.data;
+            });
+            // Return the promise to the controller
+            return promiseForDataByXY;
+        }
+    };
+    var getDataByUserId = {
+        async: function(user_id) {
+            var promiseForDataByUserId = $http.get('/xktj/relevant/by_id/' + user_id).then(function (response) {
+                console.log('getDataByUserId(%s) is %j', user_id, response);
+                return response.data;
+            });
+            return promiseForDataByUserId;
+        }
+    };
+    var getXY = {
+        async: function() {
+            if (!promiseForXY ) {
+                promiseForXY = $http.get('/xktj/xy/').then(function (response) {
+                    console.log('getXY is %j', response);
+                    return response.data;
+                });
+            }
+            return promiseForXY;
+        }
+    };
+    var getXKDM = {
+        async: function() {
+            if (!promiseForXKDM ) {
+                promiseForXKDM = $http.get('/xkdm').then(function (response) {
+                    console.log('getXKDM is %j', response);
+                    return response.data;
+                });
+            }
+            return promiseForXKDM;
+        }
+    };
+    var getExtraDW = {
+        async: function() {
+            if (!promiseForExtraDW ) {
+                promiseForExtraDW = $http.get('/dwmc.json').then(function (response) {
+                    console.log('getExtraDW is %j', response);
+                    return response.data;
+                });
+            }
+            return promiseForExtraDW;
+        }
+    };
+    return {getDataByXY: getDataByXY, getDataByUserId: getDataByUserId, getXY: getXY, getXKDM: getXKDM, getExtraDW: getExtraDW};
+});
+
 app.controller('navCtrl', function ($scope, $location) {
     $scope.isActive = function (route) {
         return route === $location.path();
     }
 });
 
-app.controller('printCtrl', function($scope, $rootScope, $http) {
+app.controller('printCtrl', function($scope, $rootScope, $http, dataService) {
     $scope.current_xy = $rootScope.current_xy;
     $scope.data = $rootScope.data;
     $scope.user_id = $rootScope.user_id;
 
     if(!$scope.data) {
-        $http.get('/xktj/relevant/by_szxy/' + $scope.current_xy)
-            .success(function (data, status) {
-                $scope.data = data;
-                $scope.current_xy = data[0].szxy;
-            });
+        dataService.getDataByXY.async($scope.current_xy).then(function (data) {
+            $scope.data = data;
+            $scope.current_xy = data[0].szxy;
+        });
     }
 
     $scope.print = function() {
@@ -50,7 +109,7 @@ app.controller('printCtrl', function($scope, $rootScope, $http) {
     }
 });
 
-app.controller('tableCtrl', ['$scope', '$rootScope', '$http', '$filter', 'NgTableParams', function ($scope, $rootScope, $http, $filter, NgTableParams) {
+app.controller('tableCtrl', function ($scope, $rootScope, $filter, NgTableParams, dataService, $q) {
 
     $scope.update_status = {status: "", teacher_name: ""};
 
@@ -64,59 +123,61 @@ app.controller('tableCtrl', ['$scope', '$rootScope', '$http', '$filter', 'NgTabl
     };
 
     $scope.update_szxy = function() {
-        $http.get('/xktj/relevant/by_szxy/' + $scope.selected_szxy)
-            .success(function (data, status) {
-                update_table_data(data);
-            });
+        dataService.getDataByXY.async($scope.selected_szxy).then(function (data) {
+            update_table_data(data);
+        });
     };
 
-    function datenum(v, date1904) {
-        if(date1904) v+=1462;
-        var epoch = Date.parse(v);
-        return (epoch - new Date(Date.UTC(1899, 11, 30))) / (24 * 60 * 60 * 1000);
-    }
+    var xlsx_tool = {
 
-    function sheet_from_array_of_arrays(data, opts) {
-        var ws = {};
-        var range = {s: {c:10000000, r:10000000}, e: {c:0, r:0 }};
-        for(var R = 0; R != data.length; ++R) {
-            for(var C = 0; C != data[R].length; ++C) {
-                if(range.s.r > R) range.s.r = R;
-                if(range.s.c > C) range.s.c = C;
-                if(range.e.r < R) range.e.r = R;
-                if(range.e.c < C) range.e.c = C;
-                var cell = {v: data[R][C] };
-                if(cell.v == null) continue;
-                var cell_ref = XLSX.utils.encode_cell({c:C,r:R});
+        datenum: function(v, date1904) {
+            if(date1904) v+=1462;
+            var epoch = Date.parse(v);
+            return (epoch - new Date(Date.UTC(1899, 11, 30))) / (24 * 60 * 60 * 1000);
+        },
 
-                if(typeof cell.v === 'number') cell.t = 'n';
-                else if(typeof cell.v === 'boolean') cell.t = 'b';
-                else if(cell.v instanceof Date) {
-                    cell.t = 'n'; cell.z = XLSX.SSF._table[14];
-                    cell.v = datenum(cell.v);
+        sheet_from_array_of_arrays: function(data, opts) {
+            var ws = {};
+            var range = {s: {c:10000000, r:10000000}, e: {c:0, r:0 }};
+            for(var R = 0; R != data.length; ++R) {
+                for(var C = 0; C != data[R].length; ++C) {
+                    if(range.s.r > R) range.s.r = R;
+                    if(range.s.c > C) range.s.c = C;
+                    if(range.e.r < R) range.e.r = R;
+                    if(range.e.c < C) range.e.c = C;
+                    var cell = {v: data[R][C] };
+                    if(cell.v == null) continue;
+                    var cell_ref = XLSX.utils.encode_cell({c:C,r:R});
+
+                    if(typeof cell.v === 'number') cell.t = 'n';
+                    else if(typeof cell.v === 'boolean') cell.t = 'b';
+                    else if(cell.v instanceof Date) {
+                        cell.t = 'n'; cell.z = XLSX.SSF._table[14];
+                        cell.v = datenum(cell.v);
+                    }
+                    else cell.t = 's';
+
+                    ws[cell_ref] = cell;
                 }
-                else cell.t = 's';
-
-                ws[cell_ref] = cell;
             }
+            if(range.s.c < 10000000) ws['!ref'] = XLSX.utils.encode_range(range);
+            return ws;
+        },
+
+        Workbook: function() {
+            if(!(this instanceof Workbook)) return new Workbook();
+            this.SheetNames = [];
+            this.Sheets = {};
+        },
+
+        s2ab: function(s) {
+            var buf = new ArrayBuffer(s.length);
+            var view = new Uint8Array(buf);
+            for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+            return buf;
         }
-        if(range.s.c < 10000000) ws['!ref'] = XLSX.utils.encode_range(range);
-        return ws;
-    }
 
-    function Workbook() {
-        if(!(this instanceof Workbook)) return new Workbook();
-        this.SheetNames = [];
-        this.Sheets = {};
-    }
-
-    function s2ab(s) {
-        var buf = new ArrayBuffer(s.length);
-        var view = new Uint8Array(buf);
-        for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
-        return buf;
-    }
-
+    };
 
     $scope.export_xlsx = function () {
         var data = $scope.data;
@@ -129,8 +190,8 @@ app.controller('tableCtrl', ['$scope', '$rootScope', '$http', '$filter', 'NgTabl
             }
 
             var ws_name = $scope.current_xy + "学科统计数据";
-            var wb = new Workbook();
-            var ws = sheet_from_array_of_arrays(array_data);
+            var wb = new xlsx_tool.Workbook();
+            var ws = xlsx_tool.sheet_from_array_of_arrays(array_data);
 
             wb.SheetNames.push(ws_name);
             wb.Sheets[ws_name] = ws;
@@ -138,25 +199,42 @@ app.controller('tableCtrl', ['$scope', '$rootScope', '$http', '$filter', 'NgTabl
             saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), "data.xlsx")
 
         }
-    }
-
-    if(!$scope.szxys) {
-        $http.get('/xktj/xy/')
-            .success(function (data, status) {
-                $scope.szxys = data;
-            });
-    }
+    };
 
     var user_id = angular.element("#navbar > ul > li > a > span").text();
     var user_type = angular.element("#navbar > ul > li.hidden").text();
     $scope.user_id = user_id;
     $scope.user_type = user_type;
 
+    var current_xy_deferred = $q.defer();
+    var current_xy_promise = current_xy_deferred.promise;
+    current_xy_promise.then(function(current_xy) {
+        if(user_type == 'admin') {
+            dataService.getXY.async().then(function (data) {
+                $scope.szxys = data;
+                var xydws = [];
+                for(var i = 0; i < data.length; i++) {
+                    xydws.push(data[i].szxy);
+                }
+                $scope.xydws = xydws;
+            });
+        }
+        else if(user_type == 'user') {
+            dataService.getExtraDW.async().then(function (data) {
+                $scope.extraDW = data;
+                var xydws = Object.assign([], data);
+                xydws.splice(0, 0, current_xy);
+                $scope.xydws = xydws;
+            });
+        }
+    });
+
     var update_table_data = function (data) {
         $scope.data = data;
         $scope.current_xy = data[0].szxy;
         $rootScope.current_xy = $scope.current_xy;
         $rootScope.data = $scope.data;
+        current_xy_deferred.resolve($scope.current_xy);
 
         $scope.tableParams = new NgTableParams({
             page: 1,            // show first page
@@ -177,38 +255,38 @@ app.controller('tableCtrl', ['$scope', '$rootScope', '$http', '$filter', 'NgTabl
             }
         });
     };
+
     if(user_id && !$scope.data) {
-        $http.get('/xktj/relevant/by_id/' + user_id)
-            .success(function (data, status) {
-                update_table_data(data);
-            });
+        dataService.getDataByUserId.async(user_id).then(function (data) {
+            update_table_data(data);
+        });
     }
-    else {
+    else if($scope.data) {
         update_table_data($scope.data);
     }
+    else {
+        console.error('no user_id or cached data to show!');
+    }
+
+
 
 
     if(!$scope.xkdm) {
-        $http.get('/xkdm').then(function (response) {
-            if (response.status == 200) {
-                $scope.xkdm = response.data;
-
-                var xkmls = [];
-                //xkmls.push({mldm: "-", mlmc: ""});
-                var xkdm = response.data;
-                for (var key in xkdm) {
-                    if (xkdm.hasOwnProperty(key)) {
-                        xkmls.push({mldm: key, mlmc: xkdm[key].mlmc});
-                    }
+        dataService.getXKDM.async().then(function (data) {
+            $scope.xkdm = data;
+            var xkdm = data;
+            var xkmls = [];
+            //xkmls.push({mldm: "-", mlmc: ""});
+            for (var key in xkdm) {
+                if (xkdm.hasOwnProperty(key)) {
+                    xkmls.push({mldm: key, mlmc: xkdm[key].mlmc});
                 }
-                $scope.xkmls = xkmls;
             }
+            $scope.xkmls = xkmls;
         });
     }
 
-
-
-}]);
+});
 
 app.controller('formCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.update_xkml = function() {

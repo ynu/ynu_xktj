@@ -7,6 +7,7 @@ module.exports = function(sequelize, DataTypes) {
             primaryKey: true
         },
         xm: DataTypes.STRING,
+        csrq: DataTypes.STRING,
         xb: DataTypes.STRING,
         zyjszw: DataTypes.STRING,
         zgxw: DataTypes.STRING,

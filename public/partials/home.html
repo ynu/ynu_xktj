@@ -22,6 +22,21 @@
                 </div>
             </div>
             <div class="form-group">
+                <label for="csrq" class="col-sm-4 control-label">出生日期</label>
+                <div class="col-sm-8">
+                    <div class="dropdown">
+                        <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="#">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="csrq" name="csrq" data-ng-model="selectedRow.csrq"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            <datetimepicker data-ng-model="selectedRow.csrq" data-datetimepicker-config="{ modelType: 'YYYY-MM-DD', minView: 'day', dropdownSelector: '#dropdown2' }"/>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
                 <label for="xb" class="col-sm-4 control-label">性别</label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control" id="xb" name="xb" placeholder="性别" ng-model="selectedRow.xb" disabled>
@@ -32,6 +47,7 @@
                 <div class="col-sm-8">
                     <select class="form-control" id="zyjszw" name="zyjszw" ng-model="selectedRow.zyjszw">
                         <option value="">-</option>
+                        <option value="初级">初级</option>
                         <option value="中职">中职</option>
                         <option value="副高级">副高级</option>
                         <option value="正高级">正高级</option>
@@ -131,11 +147,11 @@
             </div>
 
             <form class="form-horizontal">
-                <div class="form-group" ng-show="user_type === 'admin'">
-                    <label for="szxys" class="col-sm-4 control-label">选择学院</label>
+                <div class="form-group">
+                    <label for="szxys" class="col-sm-4 control-label">选择学院/单位</label>
                     <div class="col-sm-8">
                         <select class="form-control" id="szxys" name="szxys" ng-model="selected_szxy" ng-change="update_szxy()" >
-                            <option ng-repeat="option in szxys" ng-value="option.szxy">{{option.szxy}}</option>
+                            <option ng-repeat="option in xydws" ng-value="option">{{option}}</option>
                         </select>
                     </div>
                 </div>
@@ -155,10 +171,6 @@
                     <td title="'姓名'" filter="{ xm: 'text'}" sortable="'xm'">{{row.xm}}</td>
                     <td title="'性别'" filter="{ xb: 'text'}" sortable="'xb'">{{row.xb}}</td>
                     <td title="'专业技术职务'" filter="{ zyjszw: 'text'}" sortable="'zyjszw'">{{row.zyjszw}}</td>
-                    <!--
-                    <td title="'所在学院'" filter="{ szxy: 'text'}" sortable="'szxy'">{{row.szxy}}</td>
-                    <td title="'主要学科'" filter="{ zyxk: 'text'}" sortable="'zyxk'">{{row.zyxk}}</td>
-                    -->
                 </tr>
             </table>
         </div>
