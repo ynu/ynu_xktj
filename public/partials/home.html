@@ -3,7 +3,7 @@
         <form ng-controller="formCtrl" class="form-horizontal well">
             <div class="row">
                 <div class="col-xs-6">
-                    <button class="btn btn-primary btn-raised col-xs-12" ng-click="update_xktj(selectedRow)" ng-disabled="!selectedRow">更新</button>
+                    <button class="btn btn-primary btn-raised col-xs-12" ng-click="update_xktj(selectedRow)" ng-disabled="!selectedRow">保存</button>
                 </div>
                 <div class="col-xs-6">
                     <button class="btn btn-default btn-raised col-xs-12" ng-click="refresh()">取消修改</button>
@@ -163,10 +163,10 @@
             </form>
 
             <div class="alert alert-dismissible alert-success col-md-12" ng-show="update_status.status == 'success'" ng-click="update_status.status = ''">
-                <p class="text-center">更新<strong>{{update_status.teacher_name}}</strong>成功</p>
+                <p class="text-center">保存<strong>{{update_status.teacher_name}}</strong>成功</p>
             </div>
             <div class="alert alert-dismissible alert-danger col-md-12" ng-show="update_status.status == 'error'" ng-click="update_status.status = ''">
-                <p class="text-center">更新<strong>{{update_status.teacher_name}}</strong>错误</p>
+                <p class="text-center">保存<strong>{{update_status.teacher_name}}</strong>错误</p>
             </div>
         </div>
         <div class="row well">
