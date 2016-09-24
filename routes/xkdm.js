@@ -5,7 +5,7 @@ var models  = require('../models');
 var sequelize = models.sequelize;
 
 router.get('/ml', function(req, res, next) {
-    sequelize.query("select distinct mldm, mlmc from xkdm", { type: sequelize.QueryTypes.SELECT})
+    sequelize.query("select distinct mlmc from xkdm", { type: sequelize.QueryTypes.SELECT})
         .then(function(ml_records) {
             res.json(ml_records);
         });
@@ -24,6 +24,37 @@ router.get('/zy', function(req, res, next) {
 });
 
 router.get('/', function(req, res, next) {
+
+    models.xkdm.findAll().then(function (xkdms) {
+        let xkdm_data = {};
+        for (let xkdm of xkdms) {
+            let mldm = xkdm.mldm;
+            let mlmc = xkdm.mlmc;
+            let yjxkdm = xkdm.yjxkdm;
+            let yjxkmc = xkdm.yjxkmc;
+            let zydm = xkdm.zydm;
+            let zymc = xkdm.zymc;
+
+            if (!(mlmc in xkdm_data)) {
+                xkdm_data[mlmc] = {};
+            }
+            if (!(yjxkmc in xkdm_data[mlmc])) {
+                xkdm_data[mlmc][yjxkmc] = [];
+            }
+            xkdm_data[mlmc][yjxkmc].push(zymc);
+        }
+        res.json(xkdm_data);
+    }).catch(function (err) {
+        console.log(err);
+        res.render('attend_failed', {title: 'customization'});
+    }).finally(function () {
+        // finally gets called always regardless of
+        // whether the promises resolved with or without errors.
+        // however this handler does receive any arguments.
+    });
+});
+
+router.get('/old', function(req, res, next) {
 
   models.xkdm.findAll().then(function(xkdms) {
     let xkdm_data = {};

@@ -20,7 +20,7 @@ app.config(function($routeProvider, $locationProvider) {
 });
 
 app.factory('dataService', function($http) {
-    var promiseForXY, promiseForXKDM, promiseForExtraDW;
+    var promiseForXY, promiseForXKDM, promiseForXKML, promiseForExtraDW;
     var getDataByXY = {
         async: function(xy) {
             // $http returns a promise, which has a then function, which also returns a promise
@@ -65,6 +65,17 @@ app.factory('dataService', function($http) {
             return promiseForXKDM;
         }
     };
+    var getXKML = {
+        async: function() {
+            if (!promiseForXKML ) {
+                promiseForXKML = $http.get('/xkdm/ml').then(function (response) {
+                    console.log('getXKML is %j', response);
+                    return response.data;
+                });
+            }
+            return promiseForXKML;
+        }
+    };
     var getExtraDW = {
         async: function() {
             if (!promiseForExtraDW ) {
@@ -76,7 +87,7 @@ app.factory('dataService', function($http) {
             return promiseForExtraDW;
         }
     };
-    return {getDataByXY: getDataByXY, getDataByUserId: getDataByUserId, getXY: getXY, getXKDM: getXKDM, getExtraDW: getExtraDW};
+    return {getDataByXY: getDataByXY, getDataByUserId: getDataByUserId, getXY: getXY, getXKDM: getXKDM, getXKML: getXKML, getExtraDW: getExtraDW};
 });
 
 app.controller('navCtrl', function ($scope, $location, $http, $window) {
@@ -123,8 +134,13 @@ app.controller('tableCtrl', function ($scope, $rootScope, $filter, NgTableParams
     $scope.setSelected = function(row) {
         $scope.selectedRow = row;
         $scope.selected_row_id = row.id;
-        $scope.yjxks = [{yjxkdm: row.zykx, yjxkmc: row.zyxk}];
-        $scope.zys = [{zydm: row.dexk, zymc: row.dexk}];
+        // initialization select element
+        $scope.zyxk_xkmls = [row.zyxk_xkml];
+        $scope.zyxk_yjxks = [row.zyxk_yjxk];
+        $scope.zyxk_ejxks = [row.zyxk_ejxk];
+        $scope.dexk_xkmls = [row.dexk_xkml];
+        $scope.dexk_yjxks = [row.dexk_yjxk];
+        $scope.dexk_ejxks = [row.dexk_ejxk];
     };
 
     $scope.update_szxy = function() {
@@ -188,10 +204,10 @@ app.controller('tableCtrl', function ($scope, $rootScope, $filter, NgTableParams
         var data = $scope.data;
         if(data) {
             var array_data = [];
-            array_data.push(['工号', '姓名', '出生日期', '性别', '专业技术职务', '最高学位', '学历', '所在学院', '主要学科', '主要学科导师', '第二学科', '第二学科导师', '手机号码', '电子邮箱', '备注']);
+            array_data.push(['工号', '姓名', '出生日期', '性别', '专业技术职务', '最高学位', '学历', '所在学院', '主要学科学科门类', '主要学科一级学科', '主要学科二级学科', '主要学科导师', '第二学科学科门类', '第二学科一级学科', '第二学科二级学科', '第二学科导师', '手机号码', '电子邮箱', '备注']);
             for(var i = 0; i < data.length; i ++) {
                 item = data[i];
-                array_data.push([item.id, item.xm, item.csrq, item.xb, item.zyjszw, item.zgxw, item.xl, item.szxy, item.zyxk, item.zyxk_ds, item.dexk, item.dexk_ds, item.sjhm, item.dzyx, item.bz]);
+                array_data.push([item.id, item.xm, item.csrq, item.xb, item.zyjszw, item.zgxw, item.xl, item.szxy, item.zyxk_xkml, item.zyxk_yjxk, item.zyxk_ejxk, item.zyxk_ds, item.dexk_xkml, item.dexk_yjxk, item.dexk_ejxk, item.dexk_ds, item.sjhm, item.dzyx, item.bz]);
             }
 
             var ws_name = $scope.current_xy + "学科统计数据";
@@ -273,9 +289,6 @@ app.controller('tableCtrl', function ($scope, $rootScope, $filter, NgTableParams
         console.error('no user_id or cached data to show!');
     }
 
-
-
-
     if(!$scope.xkdm) {
         dataService.getXKDM.async().then(function (data) {
             $scope.xkdm = data;
@@ -293,42 +306,68 @@ app.controller('tableCtrl', function ($scope, $rootScope, $filter, NgTableParams
 
 });
 
-app.controller('formCtrl', function ($scope, $http, $window) {
-    $scope.update_xkml = function() {
-        var mlmc = $scope.selected_xkml;
-        var xkdm = $scope.xkdm;
-        var mldm = null;
-        for (var key in xkdm) {
-            if (xkdm.hasOwnProperty(key) && xkdm[key].mlmc == mlmc) {
-                mldm = key;
-            }
-        }
-        $scope.mldm = mldm;
+app.controller('formCtrl', function ($scope, $http, $window, dataService) {
 
-        var yjxks = [];
-        //yjxks.push({yjxkdm: "-", yjxkmc: ""});
-        var yjxks_object = $scope.xkdm[mldm].yjxks;
-        for (var key in yjxks_object) {
-            if (yjxks_object.hasOwnProperty(key)) {
-                yjxks.push({yjxkdm: key, yjxkmc: yjxks_object[key].yjxkmc});
+    dataService.getXKML.async().then(function (data) {
+        var plain_data = [];
+        for (var i = 0; i < data.length; i ++) {
+            plain_data.push(data[i].mlmc);
+        }
+        $scope.zyxk_xkmls = plain_data;
+        var dexk_xkmls = Object.assign([], plain_data);
+        $scope.dexk_xkmls = dexk_xkmls;
+    });
+
+    dataService.getXKDM.async().then(function (data) {
+        $scope.xkdm = data;
+    });
+
+    dataService.getXY.async().then(function (data) {
+        var plain_data = [];
+        for (var i = 0; i < data.length; i ++) {
+            plain_data.push(data[i].szxy);
+        }
+        $scope.szxys = plain_data;
+    });
+
+    $scope.update_zyxk_xkml = function() {
+        var zyxk_xkml = $scope.selectedRow.zyxk_xkml;
+        var zyxk_yjxks = [];
+
+        var zyxk_yjxks_object = $scope.xkdm[zyxk_xkml];
+        for (var key in zyxk_yjxks_object) {
+            if (zyxk_yjxks_object.hasOwnProperty(key)) {
+                zyxk_yjxks.push(key);
             }
         }
-        $scope.yjxks = yjxks;
+        $scope.zyxk_yjxks = zyxk_yjxks;
 
     }
 
-    $scope.update_yjxk = function() {
-        var yjxkmc = $scope.selectedRow.zyxk;
-        var yjxks = $scope.xkdm[$scope.mldm].yjxks;
-        var zyxkdm = null;
-        for (var key in yjxks) {
-            if (yjxks.hasOwnProperty(key) && yjxks[key].yjxkmc == yjxkmc) {
-                zyxkdm = key;
+    $scope.update_zyxk_yjxk = function() {
+        var zyxk_yjxk = $scope.selectedRow.zyxk_yjxk;
+        $scope.zyxk_ejxks = $scope.xkdm[$scope.selectedRow.zyxk_xkml][zyxk_yjxk];
+
+    }
+
+    $scope.update_dexk_xkml = function() {
+        var dexk_xkml = $scope.selectedRow.dexk_xkml;
+        var dexk_yjxks = [];
+        //dexk_yjxks.push({yjxkdm: "-", yjxkmc: ""});
+
+        var dexk_yjxks_object = $scope.xkdm[dexk_xkml];
+        for (var key in dexk_yjxks_object) {
+            if (dexk_yjxks_object.hasOwnProperty(key)) {
+                dexk_yjxks.push(key);
             }
         }
-        $scope.zyxkdm = zyxkdm;
+        $scope.dexk_yjxks = dexk_yjxks;
 
-        $scope.zys = $scope.xkdm[$scope.mldm].yjxks[zyxkdm].zys;
+    }
+
+    $scope.update_dexk_yjxk = function() {
+        var dexk_yjxk = $scope.selectedRow.dexk_yjxk;
+        $scope.dexk_ejxks = $scope.xkdm[$scope.selectedRow.dexk_xkml][dexk_yjxk];
 
     }
 

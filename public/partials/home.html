@@ -1,138 +1,194 @@
 <div class="row" ng-controller="tableCtrl">
     <div class="col-md-4 col-md-push-8">
         <form ng-controller="formCtrl" class="form-horizontal well">
-            <div class="row">
-                <div class="col-xs-6">
-                    <button class="btn btn-primary btn-raised col-xs-12" ng-click="update_xktj(selectedRow)" ng-disabled="!selectedRow">保存</button>
-                </div>
-                <div class="col-xs-6">
-                    <button class="btn btn-default btn-raised col-xs-12" ng-click="refresh()">取消修改</button>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="id" class="col-sm-4 control-label">工号</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control disabled" id="id" name="id" placeholder="工号" ng-model="selectedRow.id" disabled>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="xm" class="col-sm-4 control-label">姓名</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" id="xm" name="xm" placeholder="姓名" ng-model="selectedRow.xm" disabled>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="csrq" class="col-sm-4 control-label">出生日期</label>
-                <div class="col-sm-8">
-                    <div class="dropdown">
-                        <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="#">
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="csrq" name="csrq" data-ng-model="selectedRow.csrq"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                            </div>
-                        </a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                            <datetimepicker data-ng-model="selectedRow.csrq" data-datetimepicker-config="{ modelType: 'YYYY-MM-DD', minView: 'day', dropdownSelector: '#dropdown2' }"/>
-                        </ul>
+            <fieldset ng-disabled="!selectedRow">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button class="btn btn-primary btn-raised col-xs-12" ng-click="update_xktj(selectedRow)" ng-disabled="!selectedRow">保存</button>
+                    </div>
+                    <div class="col-xs-6">
+                        <button class="btn btn-default btn-raised col-xs-12" ng-click="refresh()">取消修改</button>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="xb" class="col-sm-4 control-label">性别</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" id="xb" name="xb" placeholder="性别" ng-model="selectedRow.xb" disabled>
+                <div class="panel panel-info">
+                    <div class="panel-heading">基本信息</div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="id" class="col-sm-5 control-label">工号</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control disabled" id="id" name="id" placeholder="工号" ng-model="selectedRow.id" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="xm" class="col-sm-5 control-label">姓名</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="xm" name="xm" placeholder="姓名" ng-model="selectedRow.xm" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="csrq" class="col-sm-5 control-label">出生日期</label>
+                            <div class="col-sm-7">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="#">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="csrq" name="csrq" data-ng-model="selectedRow.csrq"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                        </div>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                        <datetimepicker data-ng-model="selectedRow.csrq" data-datetimepicker-config="{ modelType: 'YYYY-MM-DD', minView: 'day', dropdownSelector: '#dropdown2' }"/>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="xb" class="col-sm-5 control-label">性别</label>
+                            <div class="col-sm-7">
+                                <select class="form-control" id="xb" name="xb" ng-model="selectedRow.xb">
+                                    <option value="">-</option>
+                                    <option value="男">男</option>
+                                    <option value="女">女</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="zyjszw" class="col-sm-5 control-label">专业技术职务</label>
+                            <div class="col-sm-7">
+                                <select class="form-control" id="zyjszw" name="zyjszw" ng-model="selectedRow.zyjszw">
+                                    <option value="">-</option>
+                                    <option value="初级">初级</option>
+                                    <option value="中职">中职</option>
+                                    <option value="副高级">副高级</option>
+                                    <option value="正高级">正高级</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="zgxw" class="col-sm-5 control-label">最高学位</label>
+                            <div class="col-sm-7">
+                                <select class="form-control" id="zgxw" name="zgxw" ng-model="selectedRow.zgxw">
+                                    <option value="">-</option>
+                                    <option value="本科">本科</option>
+                                    <option value="硕士">硕士</option>
+                                    <option value="博士">博士</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="szxy" class="col-sm-5 control-label">所在学院</label>
+                            <div class="col-sm-7">
+                                <select class="form-control" id="szxy" name="szxy" ng-model="selectedRow.szxy" >
+                                    <option ng-repeat="option in szxys" ng-value="option">{{option}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="zyjszw" class="col-sm-4 control-label">专业技术职务</label>
-                <div class="col-sm-8">
-                    <select class="form-control" id="zyjszw" name="zyjszw" ng-model="selectedRow.zyjszw">
-                        <option value="">-</option>
-                        <option value="初级">初级</option>
-                        <option value="中职">中职</option>
-                        <option value="副高级">副高级</option>
-                        <option value="正高级">正高级</option>
-                    </select>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">主要学科</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="zyxk_xkml" class="col-sm-5 control-label">主要学科门类</label>
+                            <div class="col-sm-7">
+                                <select class="form-control" id="zyxk_xkml" name="zyxk_xkml" ng-model="selectedRow.zyxk_xkml" ng-change="update_zyxk_xkml()" >
+                                    <option ng-repeat="option in zyxk_xkmls" ng-value="option">{{option}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="zyxk_yjxk" class="col-sm-5 control-label">主要学科一级学科</label>
+                            <div class="col-sm-7">
+                                <select class="form-control" id="zyxk_yjxk" name="zyxk_yjxk" ng-model="selectedRow.zyxk_yjxk" ng-change="update_zyxk_yjxk()">
+                                    <option ng-repeat="option in zyxk_yjxks" ng-value="option">{{option}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="zyxk_ejxk" class="col-sm-5 control-label">主要学科二级学科</label>
+                            <div class="col-sm-7">
+                                <select class="form-control" id="zyxk_ejxk" name="zyxk_ejxk" ng-model="selectedRow.zyxk_ejxk">
+                                    <option ng-repeat="option in zyxk_ejxks" ng-value="option">{{option}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="zyxk_ds" class="col-sm-5 control-label">主要学科导师</label>
+                            <div class="col-sm-7">
+                                <select class="form-control" id="zyxk_ds" name="zyxk_ds" ng-model="selectedRow.zyxk_ds">
+                                    <option value="">-</option>
+                                    <option value="硕士生导师">硕士生导师</option>
+                                    <option value="博士生导师">博士生导师</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="zgxw" class="col-sm-4 control-label">最高学位</label>
-                <div class="col-sm-8">
-                    <select class="form-control" id="zgxw" name="zgxw" ng-model="selectedRow.zgxw">
-                        <option value="">-</option>
-                        <option value="本科">本科</option>
-                        <option value="硕士">硕士</option>
-                        <option value="博士">博士</option>
-                    </select>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">第二学科</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="dexk_xkml" class="col-sm-5 control-label">第二学科门类</label>
+                            <div class="col-sm-7">
+                                <select class="form-control" id="dexk_xkml" name="dexk_xkml" ng-model="selectedRow.dexk_xkml" ng-change="update_dexk_xkml()" >
+                                    <option ng-repeat="option in dexk_xkmls" ng-value="option">{{option}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="dexk_yjxk" class="col-sm-5 control-label">第二学科一级学科</label>
+                            <div class="col-sm-7">
+                                <select class="form-control" id="dexk_yjxk" name="dexk_yjxk" ng-model="selectedRow.dexk_yjxk" ng-change="update_dexk_yjxk()">
+                                    <option ng-repeat="option in dexk_yjxks" ng-value="option">{{option}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="dexk_ejxk" class="col-sm-5 control-label">第二学科二级学科</label>
+                            <div class="col-sm-7">
+                                <select class="form-control" id="dexk_ejxk" name="dexk_ejxk" ng-model="selectedRow.dexk_ejxk">
+                                    <option ng-repeat="option in dexk_ejxks" ng-value="option">{{option}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="dexk_ds" class="col-sm-5 control-label">第二学科导师</label>
+                            <div class="col-sm-7">
+                                <select class="form-control" id="dexk_ds" name="dexk_ds" ng-model="selectedRow.dexk_ds">
+                                    <option value="">-</option>
+                                    <option value="硕士生导师">硕士生导师</option>
+                                    <option value="博士生导师">博士生导师</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="szxy" class="col-sm-4 control-label">所在学院</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" id="szxy" name="szxy" placeholder="所在学院" ng-model="selectedRow.szxy" disabled>
+                <div class="panel panel-default">
+                    <div class="panel-heading">其他信息</div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="sjhm" class="col-sm-5 control-label">手机号码</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control disabled" id="sjhm" name="sjhm" placeholder="手机号码" ng-model="selectedRow.sjhm">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="dzyx" class="col-sm-5 control-label">电子邮箱</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control disabled" id="dzyx" name="dzyx" placeholder="电子邮箱" ng-model="selectedRow.dzyx">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="bz" class="col-sm-5 control-label">备注</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control disabled" id="bz" name="bz" placeholder="备注" ng-model="selectedRow.bz">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="xkml" class="col-sm-4 control-label">学科门类</label>
-                <div class="col-sm-8">
-                    <select class="form-control" id="xkml" name="xkml" ng-model="selected_xkml" ng-change="update_xkml()" >
-                        <option ng-repeat="option in xkmls | orderBy:'mldm'" ng-value="option.mlmc">{{option.mlmc}}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="zyxk" class="col-sm-4 control-label">主要学科</label>
-                <div class="col-sm-8">
-                    <select class="form-control" id="zyxk" name="zyxk" ng-model="selectedRow.zyxk" ng-change="update_yjxk()">
-                        <option ng-repeat="option in yjxks | orderBy:'yjxkdm'" ng-value="option.yjxkmc">{{option.yjxkmc}}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="zyxk_ds" class="col-sm-4 control-label">主要学科导师</label>
-                <div class="col-sm-8">
-                    <select class="form-control" id="zyxk_ds" name="zyxk_ds" ng-model="selectedRow.zyxk_ds">
-                        <option value="">-</option>
-                        <option value="硕士生导师">硕士生导师</option>
-                        <option value="博士生导师">博士生导师</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="dexk" class="col-sm-4 control-label">第二学科</label>
-                <div class="col-sm-8">
-                    <select class="form-control" id="dexk" name="dexk" ng-model="selectedRow.dexk">
-                        <option ng-repeat="option in zys | orderBy:'zydm'" ng-value="option.zymc">{{option.zymc}}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="dexk_ds" class="col-sm-4 control-label">第二学科导师</label>
-                <div class="col-sm-8">
-                    <select class="form-control" id="dexk_ds" name="dexk_ds" ng-model="selectedRow.dexk_ds">
-                        <option value="">-</option>
-                        <option value="硕士生导师">硕士生导师</option>
-                        <option value="博士生导师">博士生导师</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="sjhm" class="col-sm-4 control-label">手机号码</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control disabled" id="sjhm" name="sjhm" placeholder="手机号码" ng-model="selectedRow.sjhm">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="dzyx" class="col-sm-4 control-label">电子邮箱</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control disabled" id="dzyx" name="dzyx" placeholder="电子邮箱" ng-model="selectedRow.dzyx">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="bz" class="col-sm-4 control-label">备注</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control disabled" id="bz" name="bz" placeholder="备注" ng-model="selectedRow.bz">
-                </div>
-            </div>
+            </fieldset>
         </form>
     </div>
     <div class="col-md-8 col-md-pull-4">
@@ -153,8 +209,8 @@
 
             <form class="form-horizontal">
                 <div class="form-group">
-                    <label for="szxys" class="col-sm-4 control-label">选择学院/单位</label>
-                    <div class="col-sm-8">
+                    <label for="szxys" class="col-sm-5 control-label">选择学院/单位</label>
+                    <div class="col-sm-7">
                         <select class="form-control" id="szxys" name="szxys" ng-model="selected_szxy" ng-change="update_szxy()" >
                             <option ng-repeat="option in xydws track by $index" ng-value="option">{{option}}</option>
                         </select>
