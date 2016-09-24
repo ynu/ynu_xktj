@@ -135,12 +135,12 @@ app.controller('tableCtrl', function ($scope, $rootScope, $filter, NgTableParams
         $scope.selectedRow = row;
         $scope.selected_row_id = row.id;
         // initialization select element
-        $scope.zyxk_xkmls = [row.zyxk_xkml];
-        $scope.zyxk_yjxks = [row.zyxk_yjxk];
-        $scope.zyxk_ejxks = [row.zyxk_ejxk];
-        $scope.dexk_xkmls = [row.dexk_xkml];
-        $scope.dexk_yjxks = [row.dexk_yjxk];
-        $scope.dexk_ejxks = [row.dexk_ejxk];
+        $scope.zyxk_xkmls = ["", row.zyxk_xkml];
+        $scope.zyxk_yjxks = ["", row.zyxk_yjxk];
+        $scope.zyxk_ejxks = ["", row.zyxk_ejxk];
+        $scope.dexk_xkmls = ["", row.dexk_xkml];
+        $scope.dexk_yjxks = ["", row.dexk_yjxk];
+        $scope.dexk_ejxks = ["", row.dexk_ejxk];
     };
 
     $scope.update_szxy = function() {
@@ -310,6 +310,7 @@ app.controller('formCtrl', function ($scope, $http, $window, dataService) {
 
     dataService.getXKML.async().then(function (data) {
         var plain_data = [];
+        plain_data.push("");
         for (var i = 0; i < data.length; i ++) {
             plain_data.push(data[i].mlmc);
         }
@@ -333,6 +334,7 @@ app.controller('formCtrl', function ($scope, $http, $window, dataService) {
     $scope.update_zyxk_xkml = function() {
         var zyxk_xkml = $scope.selectedRow.zyxk_xkml;
         var zyxk_yjxks = [];
+        zyxk_yjxks.push("");
 
         var zyxk_yjxks_object = $scope.xkdm[zyxk_xkml];
         for (var key in zyxk_yjxks_object) {
@@ -346,14 +348,15 @@ app.controller('formCtrl', function ($scope, $http, $window, dataService) {
 
     $scope.update_zyxk_yjxk = function() {
         var zyxk_yjxk = $scope.selectedRow.zyxk_yjxk;
-        $scope.zyxk_ejxks = $scope.xkdm[$scope.selectedRow.zyxk_xkml][zyxk_yjxk];
+        $scope.zyxk_ejxks = $scope.xkdm[$scope.selectedRow.zyxk_xkml][zyxk_yjxk].slice(0);
+        $scope.zyxk_ejxks.splice(0,0,"");
 
     }
 
     $scope.update_dexk_xkml = function() {
         var dexk_xkml = $scope.selectedRow.dexk_xkml;
         var dexk_yjxks = [];
-        //dexk_yjxks.push({yjxkdm: "-", yjxkmc: ""});
+        dexk_yjxks.push("");
 
         var dexk_yjxks_object = $scope.xkdm[dexk_xkml];
         for (var key in dexk_yjxks_object) {
@@ -367,7 +370,8 @@ app.controller('formCtrl', function ($scope, $http, $window, dataService) {
 
     $scope.update_dexk_yjxk = function() {
         var dexk_yjxk = $scope.selectedRow.dexk_yjxk;
-        $scope.dexk_ejxks = $scope.xkdm[$scope.selectedRow.dexk_xkml][dexk_yjxk];
+        $scope.dexk_ejxks = $scope.xkdm[$scope.selectedRow.dexk_xkml][dexk_yjxk].slice(0);
+        $scope.dexk_ejxks.splice(0,0,"");
 
     }
 

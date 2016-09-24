@@ -22,6 +22,10 @@
   vertical-align: middle;
 }
 
+.panel.panel-info>.panel-bg-primary {
+  background-color: #337ab7;
+}
+
 /* http://stackoverflow.com/questions/12434790/table-heading-repeat-while-printing */
 /*
 @media print
