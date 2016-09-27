@@ -243,7 +243,8 @@ app.controller('tableCtrl', function ($scope, $rootScope, $filter, NgTableParams
         else if(user_type == 'user') {
             dataService.getExtraDW.async().then(function (data) {
                 $scope.extraDW = data;
-                var xydws = Object.assign([], data);
+                //var xydws = Object.assign([], data);
+                var xydws = data.slice(0);
                 xydws.splice(0, 0, current_xy);
                 $scope.xydws = xydws;
             });
@@ -315,7 +316,8 @@ app.controller('formCtrl', function ($scope, $http, $window, dataService) {
             plain_data.push(data[i].mlmc);
         }
         $scope.zyxk_xkmls = plain_data;
-        var dexk_xkmls = Object.assign([], plain_data);
+        //var dexk_xkmls = Object.assign([], plain_data);
+        var dexk_xkmls = plain_data.slice(0);
         $scope.dexk_xkmls = dexk_xkmls;
     });
 
